@@ -1,20 +1,32 @@
 function addTask() {
-  var taskInput = document.getElementById("taskInput");
-  var taskList = document.getElementById("taskList");
-  if (taskInput.value === "") {
-    alert("Please enter a task!");
-    return;
+  const taskInput = document.getElementById('taskInput');
+  const taskList = document.getElementById('taskList');
+
+  if (taskInput.value.trim() !== '') {
+      const listItem = document.createElement('li');
+      listItem.textContent = taskInput.value;
+
+      const deleteButton = document.createElement('button');
+      deleteButton.textContent = 'Delete';
+      deleteButton.onclick = function () {
+          listItem.classList.add('fade-out');
+          setTimeout(() => taskList.removeChild(listItem), 300);
+      };
+
+      const updateButton = document.createElement('button');
+      updateButton.textContent = 'Update';
+      updateButton.onclick = function () {
+          const updatedTask = prompt('Update task:', listItem.firstChild.textContent);
+          if (updatedTask !== null && updatedTask.trim() !== '') {
+              listItem.firstChild.textContent = updatedTask;
+          }
+      };
+
+      listItem.appendChild(updateButton);
+      listItem.appendChild(deleteButton);
+      taskList.appendChild(listItem);
+
+      taskInput.value = '';
+      taskInput.focus();
   }
-  var li = document.createElement("li");
-  var span = document.createElement("span");
-  span.textContent = taskInput.value;
-  li.appendChild(span);
-  var deleteButton = document.createElement("button");
-  deleteButton.textContent = "X";
-  deleteButton.onclick = function() {
-    li.remove();
-  };
-  li.appendChild(deleteButton);
-  taskList.appendChild(li);
-  taskInput.value = "";
 }
